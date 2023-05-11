@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mapper.MemberMapper">
+
+	<!-- 회원 가입 : 5개 (userid, password, name, gender, email) -->
+	<insert id="insert">
+		INSERT INTO membertbl(userid, password, name, gender, email)
+		VALUES(#{userid},#{password},#{name},#{gender},#{email})
+	</insert>
+	
+	<!-- 회원 탈퇴 : userid, password 일치 시 -->
+	<delete id="delete">
+		DELETE FROM membertbl WHERE userid=#{userid} AND password=#{password}
+	</delete>
+	
+	<!-- 회원 정보 수정 : userid,password 일치 시 email 변경 -->
+	<update id="update">
+		UPDATE membertbl SET email=#{email} WHERE userid=#{userid} AND password=#{password}
+	</update>
+	
+	<!-- 회원조회 : userid,password 일치 시 -->
+	<select id="getRow" resultType="com.spring.domain.MemberDTO">
+		SELECT * FROM membertbl WHERE userid=#{userid} AND password=#{password}
+	</select>
+	
+	<!-- 회원 전체 조회 -->
+	<select id="getRows" resultType="com.spring.domain.MemberDTO">
+		SELECT userid,name,email FROM membertbl
+	</select>
+	
+</mapper>

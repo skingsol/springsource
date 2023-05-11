@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mapper.PersonMapper">
+	<insert id="insertPerson">
+		INSERT INTO person(id,name) VALUSE(#{id}, #{name})
+	</insert>
+	
+	<update id="updatePerson">
+		UPDATE person SET name=#{name} WHERE id=#{id}
+	</update>
+	
+	<delete id="deletePerson">
+		DELETE FROM person WHERE id=#{id}
+	</delete>
+	
+	<!-- resultType : SELECT 결과를 담을 객체 지정 -->
+	<select id="selectOne" resultType="com.spring.domain.PersonDTO">
+		SELECT * FROM person WHERE id={id}
+	</select>
+	
+	<select id="selectAll" resultType="com.spring.domain.PersonDTO">
+		SELECT * FROM person
+	</select>
+	
+</mapper>
