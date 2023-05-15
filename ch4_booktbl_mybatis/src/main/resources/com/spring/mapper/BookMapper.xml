@@ -13,12 +13,15 @@
 	<update id="update">
 		UPDATE booktbl SET price =#{price} WHERE code=#{code}
 	</update>
+	
 	<delete id="delete">
 		DELETE FROM booktbl WHERE code=#{code}
 	</delete>
+	
 	<select id="getRow" resultType="com.spring.domain.BookDTO">
 		SELECT * FROM booktbl WHERE code=#{code}
 	</select>
+	
 	<select id="getRows" resultType="com.spring.domain.BookDTO">
 		SELECT * FROM booktbl
 	</select>

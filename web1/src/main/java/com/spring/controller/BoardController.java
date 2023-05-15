@@ -2,8 +2,13 @@ package com.spring.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.spring.domain.BoardDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,9 +26,53 @@ import lombok.extern.slf4j.Slf4j;
 		
 		//@RequestMapping(value="/register", method = RequestMethod.GET) //    http://localhost:8080/board/register + GET
 		@GetMapping("/register")
-		public void register() {		
+		public void registerGet() {		
 			log.info("register 요청");		 
 		}
+		
+		// Model == request.setAttribute()
+		// RedirectAttributes : 
+		// ① addAttribute() - 일회성으로 데이터를 전달(객체 상태로 값 전달 불가)
+		// ② addFlashAttribute() - 일회성으로 데이터를 전달(session 을 사용함 - 객체 상태로 전달 가능)
+		
+		// HttpSession
+		
+		// BoardDTO 생성
+		// read 이동
+//		@PostMapping("/register")
+//		public String registerPost(BoardDTO dto, RedirectAttributes rttr) {
+//			log.info("register 요청" + dto);
+//			
+//			// BoardDTO 값이 유지가 되려면 forward 로 움직여야 함			
+//			// BoardDTO 객체에 담긴 값을 read.jsp 에서 사용하고 싶다면?
+//			// http://localhost:8080/board/read?name=홍길동&password=12345&title=제목&content=내용 
+//			// ↑으로 일회성으로 주소에 나옴
+////			rttr.addAttribute("name", dto.getName());
+////			rttr.addAttribute("password", dto.getPassword());
+////			rttr.addAttribute("title", dto.getTitle());
+////			rttr.addAttribute("content", dto.getContent());
+//			
+//			rttr.addFlashAttribute("boardDTO", dto);
+//			
+//			return "redirect:/board/read";
+//		}
+		
+		// @ModelAttribute("dto") : 괄호 부분은 생략 가능
+		// 							Model 객체 대신 사용
+		//							도메인 객체에 담을 때 이름 지정 기능
+		// registerPost(BoardDTO dto) : jsp 페이지에서 값을 가져올 때 ${boardDTO.name} 이렇게 사용가능
+		// registerPost(@ModelAttribute("dto") BoardDTO dto) : jsp 페이지에서 값을 가져올 때 ${dto.name} 이렇게 사용가능
+		
+		@PostMapping("/register")
+		public void registerPost(@ModelAttribute("dto") BoardDTO dto, RedirectAttributes rttr) {
+			log.info("register 요청" + dto);			
+			// BoardDTO 값이 유지가 되려면 forward 로 움직여야 함			
+		}
+		
+		
+		
+		
+		
 		
 		//@RequestMapping(value="/modify", method = RequestMethod.GET) //    http://localhost:8080/board/modify + GET
 		@GetMapping("/modify")
