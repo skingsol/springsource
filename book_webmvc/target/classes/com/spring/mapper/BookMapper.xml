@@ -15,4 +15,34 @@
 	  <select id="read" resultType="com.spring.domain.BookDTO">
 	  	SELECT * FROM booktbl WHERE code=#{code}
 	  </select>
+	  
+	  <update id="update">
+	  	UPDATE booktbl SET price=#{price} WHERE code=#{code}
+	  </update>
+	  
+	  <delete id="delete">
+		DELETE FROM booktbl WHERE code=#{code}
+	  </delete>
+	  
+	  <select id="search" resultType="com.spring.domain.BookDTO">
+	  
+	  <!--  조건이 criteria 변수에 들어있는 상황 
+	 
+	  	SELECT * FROM booktbl WHERE title=#{title} 
+	  	SELECT * FROM booktbl WHERE writer=#{writer}
+	 
+	  -->
+	 
+	 SELECT code,title,writer,price FROM booktbl WHERE
+	  
+	  <if test="criteria == 'writer'.toString()">
+	  	writer = #{keyword}
+	  </if>
+	  <if test="criteria == 'title'.toString()">
+	  	title like '%'||#{keyword}||'%'
+	  </if> 
+	  
+	  <!-- SELECT code,title,writer,price FROM booktbl WHERE ${criteria} LIKE '%'||#{keyword}||'%' -->
+	  
+	  </select>
 </mapper>

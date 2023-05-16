@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.domain.BookDTO;
+import com.spring.domain.SearchDTO;
 import com.spring.service.BookService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -121,13 +123,65 @@ public class BookController {
 	}
 	
 	//http://localhost:8080/book/read?code=1001 + GET => book/read.jsp
-	@GetMapping("/read")
+	// http://localhost:8080/book/modify?code=1006 => book/modify.jsp
+	@GetMapping({"/read","/modify"})
 	public void readGet(int code, Model model) {
 		log.info("read 요청"+code);
 		
 		BookDTO dto = service.get(code);
 		model.addAttribute("dto",dto);
-		
+		//View Resolver 동작      http://localhost:8080/book/read ==>       /WEB-INF/views/book/read.jsp
+		//View Resolver 동작      http://localhost:8080/book/modify ==>     /WEB-INF/views/book/modify.jsp
 	}
 	
+	// http://localhost:8080/book/modify?code=1006 => book/modify.jsp
+//	@GetMapping("/modify")
+//	public void modifyGet(int code, Model model) {
+//		log.info("read요청"+code);
+//		
+//		BookDTO dto = service.get(code);
+//		model.addAttribute("dto",dto);
+//	}
+	
+	
+	
+	// http://localhost:8080/book/modify + POST
+	@PostMapping("/modify")
+	public String updatePost(BookDTO dto, RedirectAttributes rttr) {
+		log.info("도서 정보 수정 요청"+dto);
+		
+		service.update(dto);
+		rttr.addAttribute("code", dto.getCode());
+		return "redirect:/book/read";		
+	}
+	
+	@GetMapping("/remove")
+	public String removeGet(int code) {
+		log.info("도서 정보 삭제"+code);
+		
+		service.delete(code);	
+		return "redirect:/book/list";
+	}
+	
+//	@GetMapping("/search")
+//	public String searchGet(String criteria, String keyword, Model model) {
+//		log.info("도서 정보 검색 " +criteria + keyword);
+//		
+//		List<BookDTO> list = service.getSearchList(criteria, keyword);
+//		model.addAttribute("list", list);
+//		
+//		return "/book/list";
+//	}
+	
+	@GetMapping("/search")
+	public String searchGet(SearchDTO search, Model model) {
+		log.info("도서 정보 검색 " + search);
+		
+		List<BookDTO> list = service.getSearchList(search.getCriteria(), search.getKeyword());
+		
+		model.addAttribute("list", list);
+		model.addAttribute("searchDTO", search);
+		
+		return "/book/list";
+	}
 }
