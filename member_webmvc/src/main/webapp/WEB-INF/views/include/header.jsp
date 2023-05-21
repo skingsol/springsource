@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,11 +81,11 @@
       }
     </style>
 
-<link rel="stylesheet" href='<c:url value="/resources/css/sign-in.css"/>' />
+<link rel="stylesheet" href='<c:url value="/resources/css/sign-in.css" />' />
 </head>
 <body>
 <div class="container-fluid">
-	<nav class="navbar navbar-expand-lg bg-success"data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.jsp">회원관리</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,30 +97,30 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         
-        <c:if test="${authDTO == null}">  <!-- 로그인시 로그아웃버튼으로 바뀌는 설정1 -->
-        <li class="nav-item">       
-          <a class="nav-link" href='<c:url value="/member/login"/>'>로그인</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href='<c:url value="/member/step1"/>'>회원가입</a>
-        </li>
-          </c:if>
         
-          <c:if test="${authDTO != null}"> <!-- 로그인시 로그아웃버튼으로 바뀌는 설정2 -->
-         <li class="nav-item"> 
-          <a class="nav-link" href='<c:url value="/member/logout"/>'>로그아웃</a>
-        </li> 
-         <li class="nav-item"> 
-          <a class="nav-link" href='<c:url value="/member/changePwd"/>'>비밀번호변경</a>
-        </li> 
-         <li class="nav-item"> 
-          <a class="nav-link" href='<c:url value="/member/leave"/>'>회원탈퇴</a>
-        </li> 
+        <c:if test="${authDTO == null}">               
+	        <li class="nav-item">         
+	          	<a class="nav-link" href='<c:url value="/member/login"  />'>로그인</a>
+	        </li>
+	        <li class="nav-item">        
+	          <a class="nav-link" href='<c:url value="/member/step1"  />'>회원가입</a>
+	        </li>
+        </c:if>
         
-        <li class="nav-item">
-          <a class="nav-link" href="">회원 조회</a>
-        </li>
-          </c:if>
+        <c:if test="${authDTO != null}">
+	        <li class="nav-item"> 
+	          	<a class="nav-link" href='<c:url value="/member/logout"  />'>로그아웃</a>
+	        </li> 
+	        <li class="nav-item"> 
+	          	<a class="nav-link" href='<c:url value="/member/changePwd"  />'>비밀번호변경</a>
+	        </li>
+	        <li class="nav-item"> 
+	          	<a class="nav-link" href='<c:url value="/member/leave"  />'>회원탈퇴</a>
+	        </li> 
+	        <li class="nav-item">
+	          <a class="nav-link" href="">회원조회</a>
+	        </li>
+        </c:if>
           
         <li class="nav-item">
           <a class="nav-link">Disabled</a>

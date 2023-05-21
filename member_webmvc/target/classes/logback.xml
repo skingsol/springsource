@@ -7,13 +7,13 @@
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
     </encoder>
-  </appender>
+  </appender>  
   
-	<logger name="org.springframework.context" level="info"/>
-	<logger name="org.springframework.jdbc" level="debug"/>
-	<logger name="com.spring.mapper" level="debug"/>
+  <logger name="org.springframework.context" level="info"/>
+  <logger name="org.springframework.jdbc" level="debug"/>
+  <logger name="com.spring.mapper" level="debug"/>
 
   <root level="info">
-    <appender-ref ref="STDOUT" />
+    <appender-ref ref="STDOUT" />   
   </root>
 </configuration>
