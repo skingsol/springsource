@@ -20,6 +20,16 @@
 				<input type="text" class="form-control" id="writer" name="writer" readonly value="${dto.writer}">
 			</div>
 			<input type="hidden" name="bno" value="${dto.bno}" />
+			<%-- 
+			
+			/board/modify + GET + Criteria 
+			/board/modify + POST ==> Criteria 값을 넣어주지 않아도 컨트롤러에서 사용 가능함
+			
+			<input type="hidden" name="page" value="${cri.page}" />
+			<input type="hidden" name="amount" value="${cri.amount}" /> 
+			
+			--%>
+			
 			<button type="submit" class="btn btn-info">수정</button>
 			<button type="button" class="btn btn-danger">삭제</button>
 			<button type="button" class="btn btn-secondary">목록</button>
@@ -28,6 +38,10 @@
 </div>
 <form action="" id="operForm">
 	<input type="hidden" name="bno" value="${dto.bno}" />
+	<input type="hidden" name="page" value="${cri.page}" />
+	<input type="hidden" name="amount" value="${cri.amount}" />
+	<input type="hidden" name="type" value="${cri.type}" />
+	<input type="hidden" name="keyword" value="${cri.keyword}" />
 </form>
 <script src="/resources/js/modify.js"></script>
 <%@ include file="../include/footer.jsp"%>

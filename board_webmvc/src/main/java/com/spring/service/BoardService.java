@@ -17,5 +17,5 @@ public interface BoardService {
 	//글삭제
 	public boolean delete(int bno);
 	//전체 게시물 개수
-	public int getTotalCnt();
+	public int getTotalCnt(Criteria cri);
 }

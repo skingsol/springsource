@@ -6,6 +6,13 @@
     <h1 class="h3 mb-0 text-gray-800">Board</h1>   
 </div>
 <div id="content">
-	<a href="/board/list">전체 리스트 보기</a>
+	<%-- 
+		get 방식으로 4개의 값을 보내기
+		page=1
+		amount=10
+		type=
+		keyword=
+	 --%>
+	<a href="/board/list?page=1&amount=10&type=&keyword=">전체 리스트 보기</a>
 </div>
 <%@ include file="include/footer.jsp" %>

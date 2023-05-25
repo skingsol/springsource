@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container-fluid">
-	<nav class="navbar navbar-expand-lg bg-success"data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.jsp">도서관리</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,10 +22,11 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href='<c:url value="/book/list"/>'>도서 목록</a>
+        
+          <a class="nav-link" href='<c:url value="/book/list"  />'>도서 목록</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<c:url value="/book/insert"/>">도서 추가</a>
+          <a class="nav-link" href='<c:url value="/book/insert"  />'>도서 추가</a>
         </li>
         <li class="nav-item">
           <a class="nav-link">Disabled</a>

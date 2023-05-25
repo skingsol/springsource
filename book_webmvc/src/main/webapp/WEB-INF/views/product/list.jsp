@@ -3,20 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp"%>
 <h1>도서 목록</h1> 
-<form class="row g-3 justify-content-center" action ='<c:url value="/book/search" />'>
-	<div class="col-auto">
-		<select class="form-select" name="criteria">
-			<option selected <c:out value="${searchDTO.criteria == null?'selected':''}"/> >검색기준선택</option>
-			<option value="writer"  <c:out value="${searchDTO.criteria == 'writer'?'selected':''}"/> >글쓴이</option>
-			<option value="title" <c:out value="${searchDTO.criteria == 'title'?'selected':''}"/> >제목</option>
-		</select>
-	</div>
-	<div class="col-md-5">
-		<input type="text" class="form-control" placeholder="검색어" name="keyword" value="${searchDTO.keyword}"/>
-	</div>
-	<div class="col-auto">
-		<button type="submit" class="btn btn-secondary">검색</button>
-	</div>	
+
+<form class="row g-3 justify-content-center" action='<c:url value="/book/search"/>'>
+ <div class="col-auto">
+	<select class="form-select" name="criteria">
+	  <option <c:out value="${searchDTO.criteria == null?'selected':''}" /> >검색기준선택</option>
+	  <option value="writer"  <c:out value="${searchDTO.criteria == 'writer'?'selected':''}" /> >writer</option>
+	  <option value="title"   <c:out value="${searchDTO.criteria == 'title'?'selected':''}" />>title</option>	 
+	</select>
+ </div>
+ <div class="col-md-5">
+   <input type="text" class="form-control" placeholder="검색어" name="keyword" value="${searchDTO.keyword}">
+ </div>
+ <div class="col-auto">
+ 	<button type="submit" class="btn btn-secondary">검색</button>
+ </div>
 </form>
 <table class="table">
 	<thead>
@@ -34,9 +35,19 @@
 				<td><a href='<c:url value="/book/read?code=${dto.code}"/>' >${dto.title}</a></td>
 				<td>${dto.writer}</td>
 				<td>${dto.price}</td>
-			</tr>		
+			</tr>
 		</c:forEach>		
 	</tbody>
 </table>
 <script src='<c:url value="/resources/js/list.js"/>'></script>
 <%@ include file="../include/footer.jsp"%>
+
+
+
+
+
+
+
+
+
+

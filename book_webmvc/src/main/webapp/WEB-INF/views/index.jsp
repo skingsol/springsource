@@ -3,4 +3,6 @@
 <%@ include file="include/header.jsp" %>
 	<h1>INDEX</h1>
 <%@ include file="include/footer.jsp" %>
-	
+
+
+

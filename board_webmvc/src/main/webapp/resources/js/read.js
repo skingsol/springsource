@@ -19,3 +19,194 @@ document.querySelector(".btn-secondary").addEventListener("click", () => {
   form.action = "/board/list";
   form.submit();
 });
+
+// 댓글 보여줄 영역 가져오기
+let page = 1;
+
+let chat = document.querySelector(".chat");
+showList(page);
+
+function showReplyPage(total) {
+  let endPage = Math.ceil(page / 10.0) * 10;
+  let startPage = endPage - 9;
+  let prev = startPage != 1;
+  let next = false;
+
+  if (endPage * 10 >= total) {
+    endPage = Math.ceil(total / 10.0);
+  }
+  if (endPage * 10 >= total) {
+    next = true;
+  }
+  let str = "<ul class='pagination justify-content-center'>";
+  if (prev) {
+    str +=
+      "<li class='page-item'><a class='page-link' href='" +
+      (startPage - 1) +
+      "'>Previous</a></li>";
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    let active = page == i ? "active" : "";
+    str +=
+      "<li class='page-item " +
+      active +
+      "'><a class='page-link' href='" +
+      i +
+      "'>" +
+      i +
+      "</a></li>";
+  }
+
+  if (next) {
+    str +=
+      "<li class='page-item'><a class='page-link' href='" +
+      (startPage + 1) +
+      "'>Next</a></li>";
+  }
+
+  str += "</ul>";
+  document.querySelector(".card-footer").innerHTML = str;
+}
+
+// 댓글 페이지 나누기 숫자 클릭 시 a태그 동작 중지
+// href 에 있는 값 가져오기
+// showList(가져온값) 호출
+document.querySelector(".card-footer").addEventListener("click", (e) => {
+  e.preventDefault();
+  page = e.target.getAttribute("href");
+  showList(page);
+});
+
+function showList(pageNum) {
+  // 현재 게시물에 대한 댓글 가져오기
+  // page: page || 1 => page 변수값이 존재하면 page 값 사용하고 없으면 1
+  replyService.getList({ bno: bno, page: page || 1 }, (total, result) => {
+    console.log("read.js에서 확인");
+    console.log(total);
+    console.log(result);
+
+    if (pageNum == -1) {
+      // 마지막 페이지 알아내기
+      page = Math.ceil(total / 10.0);
+      showList(page);
+      return;
+    }
+
+    // console.log(result);
+    // 도착한 데이터를 화면에 보여주기
+    if (result == null || result.length == 0) {
+      chat.innerHTML = "";
+      return;
+    }
+
+    let str = "";
+    for (let idx = 0; idx < result.length; idx++) {
+      str +=
+        "<li class='list-group-item border-bottom' data-rno='" +
+        result[idx].rno +
+        "'>";
+      str += "<div class='d-flex justify-content-between'>";
+      str +=
+        "<strong class='primary-font'>" + result[idx].replyer + "</strong>";
+      str +=
+        "<small class='text-muted text-right'>" +
+        replyService.displayTime(result[idx].replyDate) +
+        "</small>";
+      str += "</div>";
+      str += "<p>" + result[idx].reply + "</p>";
+      str += "<div class='btn-group btn-group-sm'>";
+      str += "<button class='btn btn-warning' type='button'>수정</button>";
+      str += "<button class='btn btn-danger' type='button'>삭제</button>";
+      str += "</div>";
+      str += "</li>";
+    }
+    chat.innerHTML = str;
+    showReplyPage(total); // 현 게시물에 달린 댓글 총 숫자를 이용한 페이지 나누기 함수 호출
+  });
+}
+
+// 댓글 작업 호출 => 댓글 작성 버튼 클릭 시
+// submit 중지, reply, replyer 가져오기
+document.querySelector("#replyForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const reply = document.querySelector("#reply");
+  const replyer = document.querySelector("#replyer");
+
+  replyService.add(
+    { bno: bno, reply: reply.value, replyer: replyer.value },
+    (result) => {
+      //댓글 작성 부분 지우기
+      reply.value = "";
+      replyer.value = "";
+
+      showList(-1);
+    }
+  );
+});
+
+// 수정 버튼 클릭 시 모달 창 띄우기
+// document.querySelectorAll(".btn-warning").forEach((updateBtn) => {
+//   updateBtn.addEventListener("click", () => {});
+// });
+
+// 이벤트 전파 : 자식의 이벤트는 부모에게 전달 됨 ==> ul 에 이벤트 작성
+chat.addEventListener("click", (e) => {
+  // 어느 li에서 이벤트가 발생 했느냐?
+  // e.target : 이벤트 발생 대상
+  // 이벤트 발생 대상을 감싸고 있는 부모 li 찾기
+  let li = e.target.closest("li");
+  console.log("이벤트 발생", li);
+
+  // rno 가져오기 (data-* 속성값 가져오기 : dataset)
+  let rno = li.dataset.rno;
+  console.log("rno", rno);
+
+  // 이벤트를 부모가 감지 하기 때문에
+  if (e.target.classList.contains("btn-warning")) {
+    // 댓글하나 가져오기
+    replyService.get(rno, (result) => {
+      console.log(result);
+
+      // 모달창 안에 가져오 내용 보여주기
+      document.querySelector(".modal-body #rno").value = result.rno;
+      document.querySelector(".modal-body #reply").value = result.reply;
+      document.querySelector(".modal-body #replyer").value = result.replyer;
+      $("#replyModal").modal("show");
+    });
+  } else if (e.target.classList.contains("btn-danger")) {
+    //삭제 버튼 클릭 시
+    replyService.remove(rno, (result) => {
+      if (result === "success") {
+        showList(page);
+        //location.reload();
+        alert("삭제 성공");
+      }
+    });
+  }
+});
+
+// 모달 창에서 수정버튼 클릭 시 댓글수정
+document
+  .querySelector(".modal-footer .btn-primary")
+  .addEventListener("click", () => {
+    let updateReply = {
+      // 모달 창안에 있는 rno, reply 가져온 후 자바스크립트 객체 생성
+      rno: document.querySelector(".modal-body #rno").value,
+      reply: document.querySelector(".modal-body #reply").value,
+    };
+    // replyService.update 호출
+    replyService.update(updateReply, (result) => {
+      // alert(result);
+      // 모달 창 닫기
+      if (result === "success") {
+        $("#replyModal").modal("hide");
+
+        // 페이지 새로고침
+        showList(page);
+        //location.reload();
+        alert("댓글수정 완료");
+      }
+    });
+  });

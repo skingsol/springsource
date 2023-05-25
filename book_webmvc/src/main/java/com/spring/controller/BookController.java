@@ -16,172 +16,194 @@ import com.spring.service.BookService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/book")
+@Slf4j
 public class BookController {
 	
 	@Autowired
-	private BookService service;
+	private BookService service;	
 	
-	//insert.jsp 보여주기(get방식) => http://localhost:8080/book/insert + GET
+	
+	//http://localhost:8080/book/insert + GET
+	//  /product/insert.jsp 보여주기
 //	@GetMapping("/insert")
 //	public String insertForm() {
 //		log.info("도서 정보 추가 폼 요청");		
 //		return "/product/insert";
 //	}
 //	
+//	// http://localhost:8080/book/insert + POST 	
 //	@PostMapping("/insert")
 //	public String insertPost(BookDTO dto) {
 //		log.info("도서 정보 추가");
-//		//입력값 가져오기 - HttpServleRequest, 변수, ~~DTO 셋중에 1개 사용하기
-//		//서비스 작업하기
+//		
+//		//입력값 가져오기 - HttpServletRequest, 변수, ~~DTO
+//		//서비스 작업
 //		try {
 //			boolean insertFlag = service.insert(dto);
 //			if(insertFlag) {
-//			// 입력 성공 시 목록 보여주기
+//				//입력 성공 시 목록 보여주기
 //				return "redirect:/book/list";
 //			}else {
-//				// 입력 실패 시 insert.jsp 보여주기
+//				//입력 실패 시 insert.jsp 보여주기
 //				return "/product/insert";
 //			}			
 //		} catch (Exception e) {
 //			System.out.println("오류");
 //			return "/product/insert";
-//		}
-//		
+//		}		
 //	}
 //	
 //	
-//	//http://localhost:8080/book/list + GET => list.jsp 보여주기
+//	// http://localhost:8080/book/list + GET => list.jsp 보여주기
 //	@GetMapping("/list")
 //	public String listForm(Model model) {
 //		log.info("도서 정보 목록 요청");
 //		
-//		//사용자가 작성한값 가져오고
+//		//사용자가 작성한 값 가져오기
 //		//service 작업
-//		List<BookDTO> list = service.getList();
-//		
+//		List<BookDTO> list = service.getList();		
 //		//list 에 담긴 정보를 list.jsp에 보여주고 싶다면?
-//		model.addAttribute("list", list); // == request.setAttribute()
-//		
+//		model.addAttribute("list", list); //== request.setAttribute()		
 //		return "/product/list";
 //	}
 //	
-//	//http://localhost:8080/book/read?code=1001 + GET
+//	// http://localhost:8080/book/read?code=1001 + GET
 //	@GetMapping("/read")
 //	public String readGet(int code, Model model) {
-//		log.info("read 요청"+code);
+//		log.info("read 요청 "+code);
 //		
 //		BookDTO dto = service.get(code);
-//		model.addAttribute("dto",dto);
+//		model.addAttribute("dto", dto);
 //		
 //		return "/product/read";
 //	}
 	
+	
 	//http://localhost:8080/book/insert + GET
-	//    / book/insert.jsp 보여주기
+	//  /book/insert.jsp 보여주기
+	
 	@GetMapping("/insert")
 	public void insertForm() {
-		log.info("도서 정보 추가 폼 요청");
+		log.info("도서 정보 추가 폼 요청");			
 	}
 	
+	// http://localhost:8080/book/insert + POST 	
 	@PostMapping("/insert")
 	public String insertPost(BookDTO dto) {
 		log.info("도서 정보 추가");
-		//입력값 가져오기 - HttpServleRequest, 변수, ~~DTO 셋중에 1개 사용하기
-		//서비스 작업하기
+		
+		//입력값 가져오기 - HttpServletRequest, 변수, ~~DTO
+		//서비스 작업
 		try {
 			boolean insertFlag = service.insert(dto);
 			if(insertFlag) {
-			// 입력 성공 시 목록 보여주기
+				//입력 성공 시 목록 보여주기
 				return "redirect:/book/list";
 			}else {
-				// 입력 실패 시 insert.jsp 보여주기
+				//입력 실패 시 insert.jsp 보여주기
 				return "/book/insert";
 			}			
 		} catch (Exception e) {
 			System.out.println("오류");
 			return "/book/insert";
-		}
-		
+		}		
 	}
 	
 	
-	//http://localhost:8080/book/list + GET => /book/list.jsp 보여주기
+	// http://localhost:8080/book/list + GET => book/list.jsp 보여주기
 	@GetMapping("/list")
 	public void listForm(Model model) {
 		log.info("도서 정보 목록 요청");
 		
-		//사용자가 작성한값 가져오고
+		//사용자가 작성한 값 가져오기
 		//service 작업
-		List<BookDTO> list = service.getList();
-		
+		List<BookDTO> list = service.getList();		
 		//list 에 담긴 정보를 list.jsp에 보여주고 싶다면?
-		model.addAttribute("list", list); // == request.setAttribute()
-		
+		model.addAttribute("list", list); //== request.setAttribute()		
 	}
 	
-	//http://localhost:8080/book/read?code=1001 + GET => book/read.jsp
+	// http://localhost:8080/book/read?code=1001 + GET => book/read.jsp
 	// http://localhost:8080/book/modify?code=1006 => book/modify.jsp
 	@GetMapping({"/read","/modify"})
 	public void readGet(int code, Model model) {
-		log.info("read 요청"+code);
+		log.info("read 요청 "+code);
 		
 		BookDTO dto = service.get(code);
-		model.addAttribute("dto",dto);
-		//View Resolver 동작      http://localhost:8080/book/read ==>       /WEB-INF/views/book/read.jsp
-		//View Resolver 동작      http://localhost:8080/book/modify ==>     /WEB-INF/views/book/modify.jsp
+		model.addAttribute("dto", dto);	
+		//View Resolver 동작   http://localhost:8080/book/read  ==>    /WEB-INF/views/book/read.jsp
+		//                     http://localhost:8080/book/modify ==>   /WEB-INF/views/book/modify.jsp
 	}
-	
-	// http://localhost:8080/book/modify?code=1006 => book/modify.jsp
+	 
 //	@GetMapping("/modify")
 //	public void modifyGet(int code, Model model) {
-//		log.info("read요청"+code);
+//		log.info("read 요청 "+code);
 //		
 //		BookDTO dto = service.get(code);
-//		model.addAttribute("dto",dto);
+//		model.addAttribute("dto", dto);	
 //	}
 	
 	
+	//  http://localhost:8080/book/modify + POST
 	
-	// http://localhost:8080/book/modify + POST
 	@PostMapping("/modify")
 	public String updatePost(BookDTO dto, RedirectAttributes rttr) {
-		log.info("도서 정보 수정 요청"+dto);
+		log.info("도서 정보 수정 "+dto);
 		
 		service.update(dto);
+		
 		rttr.addAttribute("code", dto.getCode());
-		return "redirect:/book/read";		
+		
+		//   /book/read 
+		return "redirect:/book/read";
 	}
 	
 	@GetMapping("/remove")
 	public String removeGet(int code) {
-		log.info("도서 정보 삭제"+code);
+		log.info("도서 정보 삭제 "+code);
 		
-		service.delete(code);	
+		// 삭제 후 목록 보여주기
+		service.delete(code);
+		
 		return "redirect:/book/list";
 	}
 	
+	
+//	사용자 입력 값 가져오기 => 변수 사용
 //	@GetMapping("/search")
-//	public String searchGet(String criteria, String keyword, Model model) {
-//		log.info("도서 정보 검색 " +criteria + keyword);
+//	public String searchGet(String criteria, String keyword,Model model) {
+//		log.info("도서 정보 검색 "+criteria+", "+keyword);
 //		
 //		List<BookDTO> list = service.getSearchList(criteria, keyword);
-//		model.addAttribute("list", list);
+//		
+//		model.addAttribute("list", list);		
 //		
 //		return "/book/list";
 //	}
 	
 	@GetMapping("/search")
-	public String searchGet(SearchDTO search, Model model) {
-		log.info("도서 정보 검색 " + search);
+	public String searchGet(SearchDTO search,Model model) {
+		log.info("도서 정보 검색 "+ search);
 		
 		List<BookDTO> list = service.getSearchList(search.getCriteria(), search.getKeyword());
 		
-		model.addAttribute("list", list);
+		model.addAttribute("list", list);		
 		model.addAttribute("searchDTO", search);
 		
 		return "/book/list";
 	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
