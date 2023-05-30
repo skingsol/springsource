@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.domain.BoardDTO;
 import com.spring.domain.Criteria;
+import com.spring.mapper.AttachMapper;
 import com.spring.mapper.BoardMapper;
 
 
@@ -15,16 +17,31 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	private BoardMapper mapper;
+	@Autowired
+	private AttachMapper attachMapper;
 	
 	
 	@Override
 	public List<BoardDTO> getList(Criteria cri) {		
 		return mapper.list(cri);
 	}
-
+	
+	@Transactional
 	@Override
 	public boolean insert(BoardDTO dto) {		
-		return mapper.insert(dto)==1?true:false;
+		// board 테이블 + attach 테이블 등록
+		boolean insertFlag= mapper.insert(dto)==1?true:false;
+		
+		if(dto.getAttachList() == null || dto.getAttachList().size() == 0) {
+			return insertFlag;
+		}
+		
+		dto.getAttachList().forEach(attach ->{
+			attach.setBno(dto.getBno());
+			attachMapper.insert(attach);
+		});
+		
+		return insertFlag;
 	}
 
 	@Override

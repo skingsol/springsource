@@ -54,6 +54,12 @@ public class BoardController {
 	public String registerPost(BoardDTO dto,RedirectAttributes rttr,Criteria cri) {
 		log.info("글쓰기 등록 요청 "+dto);
 		
+		// 첨부파일 확인
+//		if(dto.getAttachList() != null) {
+//			dto.getAttachList().forEach(attach -> log.info(attach.toString()));
+//		}
+		
+		
 		if(service.insert(dto)) {
 			
 			log.info("글 번호 : "+dto.getBno());
