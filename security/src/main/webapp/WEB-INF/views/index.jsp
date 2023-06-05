@@ -10,6 +10,11 @@
 	<security:authorize access="!isAuthenticated()">
 		<div class="row">
 			<div class="col">
+				<a href="/security/register">회원가입</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
 				<a href="/security/login">로그인</a>
 			</div>
 		</div>

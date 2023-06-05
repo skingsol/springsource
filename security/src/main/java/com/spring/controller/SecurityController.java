@@ -1,13 +1,18 @@
 package com.spring.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.domain.SpUserDTO;
+import com.spring.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +20,25 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/security")
 public class SecurityController {
+	
+	@Autowired
+	private MemberService service;
+	
+	// 회원가입
+	@GetMapping("/register")
+	public void registerGet() {
+		log.info("회원가입 폼 요청");
+	}
+	
+	// 회원가입 성공시 index 이동
+	//          실패시 register 이동
+	@PostMapping("/register")
+	public String registerPost(SpUserDTO dto) {
+		log.info("회원가입 요청" + dto);
+		
+		String path = service.register(dto) ? "redirect:/" : "/security/register";
+		return path;
+	}
 	
 	@GetMapping("/login")
 	public void loginGet() {
