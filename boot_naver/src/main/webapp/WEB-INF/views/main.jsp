@@ -70,9 +70,7 @@
                 </div>                     
            </div>          
         </div>
-    </div>  <!-- container end -->	
-    
-       
+    </div>  <!-- container end -->       
 <script src="/js/main.js"></script>
 </body>
 </html>

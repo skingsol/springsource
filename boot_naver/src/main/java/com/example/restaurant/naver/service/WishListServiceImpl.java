@@ -1,7 +1,11 @@
 package com.example.restaurant.naver.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.restaurant.naver.NaverClient;
 import com.example.restaurant.naver.dto.SearchImageItem;
@@ -14,6 +18,9 @@ import com.example.restaurant.wishlist.dto.WishListDTO;
 import com.example.restaurant.wishlist.entity.WishListEntity;
 import com.example.restaurant.wishlist.repository.WishListRpository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class WishListServiceImpl implements WishListService {
 	
@@ -108,4 +115,16 @@ public class WishListServiceImpl implements WishListService {
 		dto.setLastVisitDate(entity.getLastVisitDate());
 		return dto;
 	}
+
+	@Override
+	public List<WishListDTO> all() {
+		// List<WishListEntity> list = wishListRpository.findAll(); 
+		return wishListRpository.findAll()
+								.stream()
+								.map(wish-> entitytodDto(wish))
+										.collect(Collectors.toList());
+	}
+	
+	
+	
 }
